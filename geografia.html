@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Geografía - Plataforma de Estudio</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f7fb;margin:0}
+header{background:#1565c0;color:#fff;padding:18px;text-align:center}
+nav{display:flex;gap:10px;justify-content:center;padding:10px;flex-wrap:wrap}
+button{padding:10px 14px;border:none;border-radius:8px;background:#1976d2;color:white;cursor:pointer}
+section{display:none;padding:20px;max-width:900px;margin:auto}
+section.active{display:block}
+.card{background:#fff;padding:16px;border-radius:10px;margin:12px 0;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+</style>
+</head>
+<body>
+<header><h1>Geografía</h1><p>Plataforma de estudio</p></header>
+<nav>
+<button onclick="show('res')">Resúmenes</button>
+<button onclick="show('general')">Resumen general</button>
+<button onclick="show('tips')">Tips</button>
+<button onclick="show('test')">Mini test</button>
+<button onclick="show('prog')">Progreso</button>
+</nav>
+
+<section id="res" class="active">
+<div class="card"><h2>Criterios para llamar América</h2><p><b>Continental:</b> un solo continente. <b>Físico:</b> según relieve y naturaleza. <b>Lingüístico/cultural:</b> según idioma y cultura.</p></div>
+<div class="card"><h2>América Latina y Anglosajona</h2><p>Latina: predominan español, portugués y francés. Anglosajona: principalmente inglés.</p></div>
+<div class="card"><h2>Agricultura</h2><p>Subsistencia: para consumo propio. Comercial o de plantación: para vender.</p></div>
+<div class="card"><h2>Ganadería</h2><p>Estancia: cría ganado. Cabaña: mejora genética. Tambo: producción de leche.</p></div>
+</section>
+
+<section id="general"><div class="card"><h2>Resumen general</h2><p>El continente americano puede clasificarse con distintos criterios. América Latina y Anglosajona se diferencian principalmente por idioma e historia. La agricultura puede ser de subsistencia o comercial. En la ganadería existen estancias, cabañas y tambos con funciones diferentes.</p></div></section>
+
+<section id="tips"><div class="card"><ul><li>Compará América Latina y Anglosajona.</li><li>No confundas estancia, cabaña y tambo.</li><li>Recordá la diferencia entre agricultura de subsistencia y comercial.</li></ul></div></section>
+
+<section id="test">
+<div class="card">
+<p>1. ¿Qué tipo de agricultura es para consumo propio?</p>
+<label><input type="radio" name="q1" value="1"> Subsistencia</label><br>
+<label><input type="radio" name="q1" value="0"> Comercial</label>
+<p>2. ¿Qué establecimiento produce leche?</p>
+<label><input type="radio" name="q2" value="1"> Tambo</label><br>
+<label><input type="radio" name="q2" value="0"> Estancia</label>
+<p>3. América Anglosajona tiene como idioma principal...</p>
+<input id="q3" placeholder="Respuesta">
+<br><br>
+<button onclick="corregir()">Corregir</button>
+<p id="resultado"></p>
+</div>
+</section>
+
+<section id="prog">
+<div class="card">
+<p>Mejor puntaje: <span id="best">0</span>%</p>
+<p>Último puntaje: <span id="last">-</span></p>
+</div>
+</section>
+
+<script>
+function show(id){
+ document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ cargar();
+}
+function corregir(){
+ let p=0,t=3;
+ let q1=document.querySelector('input[name=q1]:checked');
+ if(q1&&q1.value=="1")p++;
+ let q2=document.querySelector('input[name=q2]:checked');
+ if(q2&&q2.value=="1")p++;
+ if(document.getElementById("q3").value.trim().toLowerCase().includes("ing"))p++;
+ let porc=Math.round(p/t*100);
+ document.getElementById("resultado").innerHTML="Puntaje: "+porc+"%";
+ localStorage.setItem("geo_last",porc);
+ let b=Number(localStorage.getItem("geo_best")||0);
+ if(porc>b){b=porc;localStorage.setItem("geo_best",b);}
+ cargar();
+}
+function cargar(){
+ document.getElementById("best").textContent=localStorage.getItem("geo_best")||0;
+ document.getElementById("last").textContent=(localStorage.getItem("geo_last")||"-")+"%";
+}
+cargar();
+</script>
+</body>
+</html>
